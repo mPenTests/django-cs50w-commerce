@@ -1,0 +1,16 @@
+{% extends 'auctions/layout.html' %}
+
+{% block body %}
+    <h1>Create Listing</h1>
+    <form action={% url 'create' %} method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p}}
+        <select class="form-select" aria-label="Default select example" name="category">
+            {% for category in  categories %}
+                <option selected>{{ category }}</option>
+            {% endfor %}
+          </select>
+          <br>
+        <input type="submit" value="Submit" class="btn btn-success" style="margin-top: 10px;">
+    </form>
+{% endblock body %}

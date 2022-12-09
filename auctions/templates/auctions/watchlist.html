@@ -1,0 +1,33 @@
+{% extends 'auctions/layout.html' %}
+{% load humanize %}
+
+{% block body %}
+
+    {% if error %}
+
+        <div class="alert alert-danger" role="alert">
+            Nothing Found!
+        </div>
+      
+    {% else %}
+        {% for item in items %}
+
+            <div style="margin-top: 20px;">
+                <div class="card" style="width: 20rem; height: auto;">
+                    {% if item.image %}
+                      <img class="card-img-top" style="height: 15rem;" src="{{item.image.url}}" alt="Card image cap">
+                    {% endif %}
+                    <div class="card-body">
+                      <h5 class="card-title">{{item.title}}</h5>
+                      <p class="card-text">{{item.description}}</p>
+                      <h6> Listed by: <strong>{{ item.seller|safe }} </strong></h6>
+                      <h3>${{ item.price|intcomma }}</h3>
+                      <a href={% url 'show' item.id %} class="btn btn-primary">Place Bid</a>
+                      <a href={% url 'remove' item.id%} class="btn btn-primary" style="margin-top: 10px;">Remove from Watchlist</a>
+                    </div>
+                  </div>
+              </div>
+
+        {% endfor %}
+    {% endif %}
+{% endblock body %}

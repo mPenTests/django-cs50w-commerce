@@ -1,0 +1,31 @@
+{% extends "auctions/layout.html" %}
+{% load humanize %}
+
+
+{% block body %}
+    <h2 style="margin-left: 18px;">Active Listings</h2>
+
+    {% for auction in auctions%}
+        <div style="display: inline-block; margin-left: 10px; margin-top: 30px;">
+            
+          <div class="card" style="width: 20rem; margin-left: 10px; height: auto;">
+              {% if auction.image %}
+                <img class="card-img-top" style="height: 15rem;" src="{{auction.image.url}}" alt="Card image cap">
+              {% endif %}
+              <div class="card-body">
+                <h5 class="card-title">{{auction.title}}</h5>
+                <p class="card-text">{{auction.description}}</p>
+                <h6> Listed by: <strong>{{ auction.seller|safe }} </strong></h6>
+                <h3>${{ auction.price|intcomma }}</h3>
+                {% if auction.winner %}
+                    <h5>(SOLD OUT)</h5>
+                    <h5>Winner: {{auction.winner}}</h5>
+                {% else %}
+                    <a href={% url 'show' auction.id %} class="btn btn-primary">Place Bid</a>
+                    <a href={% url 'addWatchlist' auction.id%} class="btn btn-primary">Add to Watchlist</a>
+                {% endif %}
+              </div>
+            </div>
+        </div>
+    {% endfor %}
+{% endblock %}

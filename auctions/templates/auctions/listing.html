@@ -1,0 +1,88 @@
+{% extends 'auctions/layout.html' %}
+{% load humanize %}
+
+{% block body %}
+
+{% if winner %}
+  {% if winner == user.get_username %}
+      <div class="alert alert-success" role="alert">
+        Congratulations! You won the auction!
+      </div>
+  
+  {% else %}
+      <div class="alert alert-success" role="alert">
+        Congratulations to {{ winner }} for winning the auction!
+      </div>
+  
+  
+  {% endif %}
+
+{% else %}
+      <div class="card mb-3">
+        <img src={{ image }} class="card-img-top" alt="Image failed to load" style="width: 60rem;">
+        <div class="card-body">
+          <h5 class="card-title">Title: {{ object.title }}</h5>
+          <p class="card-text">Description: {{ object.description }}</p>
+          <p class="card-text">Category: {{ object.category }}</p>
+          <p class="card-text"><h5 class="text-muted">Listed by: <strong>{{ object.seller}}</strong></h5></p>
+          <h3 class="card-text">${{ object.price|intcomma }}</h3>
+          <form action={% url 'place' object.id %} method="post">
+            {% csrf_token %}
+              <br>
+              <label for="bid" class="form-label"><h4>Your Bid</h4></label>
+              {% if message %}
+                  <div class="alert alert-danger" role="alert">
+                      {{ message }}
+                  </div>
+              {% endif %}
+              <input type="number" name="bid" id="bid" class="form-control" placeholder="Your Bid" style="width: 300px;">
+              <div class="form-text">Bid should be greater than current bid.</div>
+                
+              <div style="display: inline-block; margin-top: 20px;">
+                <input type="submit" value="Place Bid" class="btn btn-primary">
+                <a href={% url 'addWatchlist' object.id%} class="btn btn-primary">Add to Watchlist</a>                       
+                {% if close%}
+                    <a href={% url 'close' object.id%} class="btn btn-danger">Close</a>
+                {% endif %}
+                <br>
+                <h1>Post a Comment</h1>
+              </div>
+          </form>
+          <br>
+          <form action={% url 'comment' object.id %} method="post">
+            {% csrf_token %}
+            {{ commentform.as_p }}
+            <input type="submit" value="Comment" class="btn btn-primary" style="margin-top: 10px;">
+            <br>
+          </form>
+          <br>
+          <br>
+          <h1>Past Comments</h1>
+          <br>
+          <br>
+          <div name="comments">
+            {% if comments|length == 0 %}
+          
+                <div class="alert alert-dark" role="alert">
+                    No comments found!
+                </div>
+              
+            {% else %}
+              
+                {% for comment in comments%}
+                    <strong>User: {{ comment.commenter }}</strong>
+                    <br>
+                    <strong>Title: {{ comment.title }}</strong>
+                    <br>
+                    <strong>Comment: {{ comment.comment }}</strong>
+                    <br>
+                    <br> 
+                {% endfor %}
+              
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    
+{% endif %}
+{% endblock body %}
