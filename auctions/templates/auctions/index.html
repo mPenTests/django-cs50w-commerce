@@ -14,7 +14,7 @@
               {% endif %}
               <div class="card-body">
                 <h5 class="card-title">{{auction.title}}</h5>
-                <p class="card-text">{{auction.description}}</p>
+                <p class="card-text" style="white-space: nowrap; overflow: hidden; text-overflow: ellipsis">{{auction.description}}</p>
                 <h6> Listed by: <strong>{{ auction.seller|safe }} </strong></h6>
                 <h3>${{ auction.price|intcomma }}</h3>
                 {% if auction.winner %}

@@ -6,8 +6,9 @@
         {% csrf_token %}
         {{ form.as_p}}
         <select class="form-select" aria-label="Default select example" name="category">
+            <option selected> No Category </option> 
             {% for category in  categories %}
-                <option selected>{{ category }}</option>
+                <option> {{ category }} </option>
             {% endfor %}
           </select>
           <br>
